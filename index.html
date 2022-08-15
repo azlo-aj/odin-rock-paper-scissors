@@ -16,11 +16,19 @@
         <div id="header">
             <div id="player">
                 <h3>PLAYER</h3>
-                <div>♥♥♥</div>
+                <div class="health">
+                    <div class="hp">♥</div>
+                    <div class="hp">♥</div>
+                    <div class="hp">♥</div>
+                </div>
             </div>
             <div id="computer">
                 <h3>COMPUTER</h3>
-                <div>♥♥♥</div>
+                <div class="health">
+                    <div class="hp">♥</div>
+                    <div class="hp">♥</div>
+                    <div class="hp">♥</div>
+                </div>
             </div>
 
             <!-- immediate:
@@ -32,22 +40,41 @@
         <div id="middle">
             <h1>CHOOSE YOUR WEAPON</h1>
             <div id="weapon">
-                <div id="rock">
-                    <img>
+                <a href="#" id="rock">
+                    <img src="./rock.png">
                     <h2>ROCK</h2>
-                </div>
-                <div id="paper">
-                    <img>
+                </a>
+                <a href="#" id="paper">
+                    <img src="./paper.png">
                     <h2>PAPER</h2>
-                </div>
-                <div id="scissors">
-                    <img>
+                </a>
+                <a href="#" id="scissors">
+                    <img src="./scissors.png">
                     <h2>SCISSORS</h2>
-                </div>
+                </a>
             </div>
-            <h1>OH NO! TRY AGAIN...</h1>
+            <h1 id="result">OH NO! TRY AGAIN...</h1>
         </div>
         <div class="footer">Images obtained from <a href="https://www.vecteezy.com/">vecteezy.com</a></div>
     </div>
 </body>
+<script>
+function onHover(e) {
+    e.target.style.width = "250px";
+}
+
+function onMouseout(e) {
+    e.target.style.width = "200px";
+}
+let imgs = document.querySelectorAll('img');
+
+
+imgs.forEach(function(node) {node.addEventListener('mouseover', onHover)});
+imgs.forEach(function(node) {node.addEventListener('mouseleave', onMouseout)});
+
+let hp = document.querySelector('#player .health .hp');
+hp.style.animation = "pulse 1s linear infinite";
+
+
+</script>
 </html>
