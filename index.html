@@ -64,16 +64,23 @@ function onHover(e) {
 }
 
 function onMouseout(e) {
-    e.target.style.width = "200px";
+    e.target.style.width = "";
 }
 let imgs = document.querySelectorAll('img');
+
+function startPulse(){
+    let playerHp = document.querySelector('#player .health .hp');
+    let computerHp = document.querySelector('#computer .health .hp');
+    playerHp.style.animation = "pulse 0.8s linear infinite";
+    computerHp.style.animation = "pulse 0.8s linear infinite";
+}
 
 
 imgs.forEach(function(node) {node.addEventListener('mouseover', onHover)});
 imgs.forEach(function(node) {node.addEventListener('mouseleave', onMouseout)});
 
-let hp = document.querySelector('#player .health .hp');
-hp.style.animation = "pulse 1s linear infinite";
+startPulse();
+
 
 
 </script>

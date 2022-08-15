@@ -54,7 +54,7 @@ table {
     }
 
     50% {
-     transform: scale(1.5, 1.5);
+     transform: scale(1.6, 1.6);
     }
 
     100% {
@@ -101,6 +101,7 @@ body {
     max-width: inherit;
     height: 150px;
 }
+
 #player {
 }
 #computer {
@@ -108,7 +109,9 @@ body {
     flex-direction: row-reverse;
 }
 .health {
+    padding-top: 8px;
     display:flex;
+    gap: 16px;
 }
 
 #player .health {
@@ -121,6 +124,7 @@ body {
 }
 
 .hp {
+    font-size: 72px;
     color:red;
     transition: 0.7s;
     /* animation: pulse 1s linear infinite; */
@@ -150,7 +154,7 @@ body {
     height: 360px;
     justify-content: center;
     text-decoration: none;
-    transition: 1s;
+    transition: 0.5s;
     align-items: center;
 }
 
