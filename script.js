@@ -88,10 +88,11 @@ function winRound() {
         if (computerHP == 0){return}
         h1.style.color = "white";
         computerHealth.removeChild(document.querySelector('#computer .health .hp'));
-        wait = false;
+
         computerHP--;
         if (computerHP !== 0) {
-            startPulse();}
+            startPulse();
+            wait = false;}
         else {checkHPs()}
     })
 }
@@ -107,10 +108,11 @@ function loseRound() {
         if (playerHP == 0){return}
         playerHealth.removeChild(document.querySelector('#player .health .hp'));
         h1.style.color = "white";
-        wait = false;
+        
         playerHP--;
         if (playerHP !== 0) {
-            startPulse();}
+            startPulse();
+            wait = false;}
         else {checkHPs()}
     })
 }
@@ -143,7 +145,7 @@ function checkHPs() {
         
         weapon.style.transform = "scale(1, 0)";
         weapon.style.opacity = "0%";
-        if (!(document.body.contains(button))) {
+        if (!(mid.contains(button))) {
             replay.addEventListener('click', reset);
             mid.appendChild(replay);
             h1.after(replay);
@@ -155,10 +157,10 @@ function checkHPs() {
 
 
 function playRound(e) {
-    checkHPs();
     if (wait || playerHP === 0 || computerHP === 0) {
         return;
     }
+    wait = true;
     e.currentTarget.addEventListener('animationend', (e) => {e.currentTarget.style.animation = "";})
     e.currentTarget.style.animation = "select 0.3s linear 1";
     let playerChoice = e.currentTarget.getAttribute('id');
@@ -176,7 +178,7 @@ function playRound(e) {
     } else {
         loseRound();
     }
-    checkHPs();
+    // checkHPs();
 }
 
 
