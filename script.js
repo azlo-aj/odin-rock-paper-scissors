@@ -8,29 +8,9 @@ let playerHealth = document.querySelector('#player .health');
 let h1 = document.querySelector('#middle > h1');
 let button = document.querySelector('button');
 let weapon = document.querySelector('#weapon');
-let mid = document.querySelector('#middle');
+let middle = document.querySelector('#middle');
+let t0 = performance.now();
 
-function reset() {
-    // let all = document.querySelectorAll('body *');
-    // all.forEach((node) => {node = ""});
-    if (mid.contains(button)) {
-        mid.removeChild(button);
-    }
-    computerHealth.innerHTML = "";
-    playerHealth.innerHTML = "";
-
-    let heart = document.createElement('div');
-    heart.setAttribute('class', 'hp');
-    heart.textContent = "♥";
-    for (i=0; i < maxHP; i++) {
-        computerHealth.appendChild(heart.cloneNode(true));
-        playerHealth.appendChild(heart.cloneNode(true));
-        // weapon.removeChild(button);
-    }
-    startPulse();
-}
-
-reset()
 
 function startPulse(){
     let player = document.querySelector('#player .health .hp');
@@ -38,31 +18,95 @@ function startPulse(){
     player.style.animation = "pulse 0.8s linear infinite";
     computer.style.animation = "pulse 0.8s linear infinite";
 }
-startPulse();
 
-function onHover(e) {
-    e.target.style.width = "250px";
+function reset() {
+    let button = document.querySelector('button');
+    if (middle.contains(button)) {
+        middle.removeChild(button);
+    }
+    computerHealth.innerHTML = "";
+    playerHealth.innerHTML = "";
+    h1.textContent = "CHOOSE YOUR WEAPON";
+    weapon.style.transform = "scale(1, 1)";
+    weapon.style.opacity = "100%";
+
+    let heart = document.createElement('div');
+    heart.setAttribute('class', 'hp');
+    heart.textContent = "♥";
+    for (i=0; i < maxHP; i++) {
+        computerHealth.appendChild(heart.cloneNode(true));
+        playerHealth.appendChild(heart.cloneNode(true));
+    }
+    startPulse();
+    playerHP = maxHP
+    computerHP = maxHP
 }
-function onMouseout(e) {
-    e.target.style.width = "";
-}
-imgs.forEach(function(node) {node.addEventListener('mouseover', onHover)});
-imgs.forEach(function(node) {node.addEventListener('mouseleave', onMouseout)});
 
+function checkHPs() {
+    if ((playerHP === 0 || computerHP === 0)) {
+        
+        if (playerHP === 0) {
+            h1.textContent = "YOU LOSE";
+        }
+        if (computerHP === 0) {
+            h1.textContent = "YOU WIN";
+        }
+        let replayButton = document.createElement('button');
+        replayButton.textContent = "PLAY AGAIN";
+        replayButton.style.color = "white";
+        
+        let button = document.querySelector('button');
+        weapon.style.transform = "scale(1, 0)";
+        weapon.style.opacity = "0%";
+        if (!(middle.contains(button))) {
+            middle.appendChild(replayButton);
+            replayButton.addEventListener('click', reset); 
+            h1.after(replayButton);
+}}}
 
-// let rock = document.getElementById('rock');
-// let paper = document.getElementById('paper');
-// let scissors = document.getElementById('scissors');
+function winRound() {
+    h1.textContent = "GOOD JOB! KEEP GOING...";
+    h1.style.color = "yellowgreen";
+    h1.addEventListener('animationend', () => {h1.style.animation = "";})
+    h1.style.animation = "bounce 0.3s linear 1";
+    let hp = document.querySelector('#computer .health .hp')
+    hp.style.animation = "explode 1s linear 1";
+    hp.addEventListener('animationend', () => {
+        if (computerHP == 0){return}
+        h1.style.color = "white";
+        computerHealth.removeChild(document.querySelector('#computer .health .hp'));
+        computerHP--;
+        if (computerHP !== 0) {
+            startPulse()}
+        else {checkHPs()}
+})}
 
-function animateChoice(e) {
-    // if (wait) {
-    //     return;
-    // }
-    e.target.style.animation = "select 0.6s linear 1";
-    
-}
+function loseRound() {
+    h1.textContent = "OH NO! TRY AGAIN...";
+    h1.style.color = "red";
+    h1.addEventListener('animationend', () => {h1.style.animation = "";})
+    h1.style.animation = "shake 0.3s linear 1";
+    let hp = document.querySelector('#player .health .hp')
+    hp.style.animation = "explode 1s linear 1";
+    hp.addEventListener('animationend', () => {
+        if (playerHP == 0){return}
+        playerHealth.removeChild(document.querySelector('#player .health .hp'));
+        h1.style.color = "white";
+        playerHP--;
+        if (playerHP !== 0) {
+            startPulse()}
+        else {checkHPs()}
+})}
 
-
+function tieRound() {
+    h1.textContent = "IT'S A TIE!";
+    h1.style.color = "cyan";
+    h1.style.animation = "squish 0.3s linear 1";
+    h1.addEventListener('animationend', () => {
+        h1.style.animation = "";
+        h1.style.color = "white";
+        checkHPs();
+})}
 
 function getComputerChoice() {
     let roll = Math.random();
@@ -74,93 +118,14 @@ function getComputerChoice() {
         return "scissors";
     }
 }
-
-
-function winRound() {
-    wait = true;
-    h1.textContent = "GOOD JOB! KEEP GOING...";
-    h1.style.color = "yellowgreen";
-    h1.addEventListener('animationend', () => {h1.style.animation = "";})
-    h1.style.animation = "bounce 0.3s linear 1";
-    let hp = document.querySelector('#computer .health .hp')
-    hp.style.animation = "explode 1s linear 1";
-    hp.addEventListener('animationend', () => {
-        if (computerHP == 0){return}
-        h1.style.color = "white";
-        computerHealth.removeChild(document.querySelector('#computer .health .hp'));
-
-        computerHP--;
-        if (computerHP !== 0) {
-            startPulse();
-            wait = false;}
-        else {checkHPs()}
-    })
-}
-function loseRound() {
-    wait = true;
-    h1.textContent = "OH NO! TRY AGAIN...";
-    h1.style.color = "red";
-    h1.addEventListener('animationend', () => {h1.style.animation = "";})
-    h1.style.animation = "shake 0.3s linear 1";
-    let hp = document.querySelector('#player .health .hp')
-    hp.style.animation = "explode 1s linear 1";
-    hp.addEventListener('animationend', () => {
-        if (playerHP == 0){return}
-        playerHealth.removeChild(document.querySelector('#player .health .hp'));
-        h1.style.color = "white";
-        
-        playerHP--;
-        if (playerHP !== 0) {
-            startPulse();
-            wait = false;}
-        else {checkHPs()}
-    })
-}
-
-
-function tieRound() {
-    wait = true;
-    h1.textContent = "IT'S A TIE!";
-    h1.style.color = "cyan";
-    h1.style.animation = "squish 0.3s linear 1";
-    h1.addEventListener('animationend', () => {
-        h1.style.animation = "";
-        h1.style.color = "white";
-        wait = false;
-    })
-}
-
-function checkHPs() {
-    if ((playerHP === 0 || computerHP === 0)) {
-        if (playerHP === 0) {
-            h1.textContent = "YOU LOSE";
-        }
-        if (computerHP === 0) {
-            h1.textContent = "YOU WIN";
-        }
-        let replay = document.createElement('button');
-        replay.textContent = "PLAY AGAIN";
-        replay.style.color = "white";
-        
-        
-        weapon.style.transform = "scale(1, 0)";
-        weapon.style.opacity = "0%";
-        if (!(mid.contains(button))) {
-            replay.addEventListener('click', reset);
-            mid.appendChild(replay);
-            h1.after(replay);
-            
-        }
-    }
-
-}
-
-
 function playRound(e) {
-    if (wait || playerHP === 0 || computerHP === 0) {
+    let t1 = performance.now();
+    if (!((t1-t0) > 700)) {
         return;
     }
-    wait = true;
+    if (playerHP === 0 || computerHP === 0) {
+        return;
+    }
     e.currentTarget.addEventListener('animationend', (e) => {e.currentTarget.style.animation = "";})
     e.currentTarget.style.animation = "select 0.3s linear 1";
     let playerChoice = e.currentTarget.getAttribute('id');
@@ -178,33 +143,12 @@ function playRound(e) {
     } else {
         loseRound();
     }
-    // checkHPs();
+    checkHPs();
+    t0 = performance.now();
 }
 
 
 imgs.forEach(function(node) {node.addEventListener('click', playRound)});
-
-// function game() {
-//     for (let games = 0; games < 5; games++) {
-//         let computerChoice = getComputerChoice();
-//         let playerChoice = prompt("Please type your choice");
-//         let result = playRound(playerChoice, computerChoice);
-//         console.log(result)
-//         if (result.includes("win")) {
-//             playerWins += 1;
-//         } else if (result.includes("lose")) {
-//             computerWins += 1;
-//         } else {
-//             continue;
-//         }
-//     } 
-//     if (playerWins === computerWins) {
-//         return "THERE ARE NO WINNERS!"
-//     } else if (playerWins > computerWins) {
-//         return "YOU ARE THE CHAMPION!"
-//     } else if (playerWins < computerWins) {
-//         return "YOU ARE A LOSER"
-//     }
-// }
-
-// console.log(game())
+imgs.forEach(function(node) {node.addEventListener('mouseover', (e) => {e.target.style.width = "250px"})});
+imgs.forEach(function(node) {node.addEventListener('mouseleave', (e) => {e.target.style.width = ""})});
+reset();
