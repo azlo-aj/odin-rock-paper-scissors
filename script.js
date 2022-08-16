@@ -112,7 +112,7 @@ function getComputerChoice() {
     let roll = Math.random();
     if (roll < 0.33) {
         return "rock";
-    } else if (roll < 0.67) {
+    } else if (roll < 0.66) {
         return "paper";
     } else {
         return "scissors";
@@ -120,7 +120,7 @@ function getComputerChoice() {
 }
 function playRound(e) {
     let t1 = performance.now();
-    if (!((t1-t0) > 700)) {
+    if (!((t1-t0) > 1000)) {
         return;
     }
     if (playerHP === 0 || computerHP === 0) {
