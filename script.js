@@ -1,23 +1,36 @@
-let playerHP = 5
-let computerHP = 5
+const maxHP = 3
+let playerHP = maxHP
+let computerHP = maxHP
 let imgs = document.querySelectorAll('img');
 let wait = false;
 let computerHealth = document.querySelector('#computer .health');
 let playerHealth = document.querySelector('#player .health');
-h1 = document.querySelector('#middle > h1')
+let h1 = document.querySelector('#middle > h1');
+let button = document.querySelector('button');
+let weapon = document.querySelector('#weapon');
+let mid = document.querySelector('#middle');
 
-function resetHP() {
+function reset() {
+    // let all = document.querySelectorAll('body *');
+    // all.forEach((node) => {node = ""});
+    if (mid.contains(button)) {
+        mid.removeChild(button);
+    }
+    computerHealth.innerHTML = "";
+    playerHealth.innerHTML = "";
+
     let heart = document.createElement('div');
     heart.setAttribute('class', 'hp');
     heart.textContent = "♥";
-    for (i=0; i < playerHP; i++) {
+    for (i=0; i < maxHP; i++) {
         computerHealth.appendChild(heart.cloneNode(true));
         playerHealth.appendChild(heart.cloneNode(true));
+        // weapon.removeChild(button);
     }
     startPulse();
 }
 
-resetHP()
+reset()
 
 function startPulse(){
     let player = document.querySelector('#player .health .hp');
@@ -68,16 +81,18 @@ function winRound() {
     h1.textContent = "GOOD JOB! KEEP GOING...";
     h1.style.color = "yellowgreen";
     h1.addEventListener('animationend', () => {h1.style.animation = "";})
-    h1.style.animation = "shake 0.3s linear 1";
+    h1.style.animation = "bounce 0.3s linear 1";
     let hp = document.querySelector('#computer .health .hp')
     hp.style.animation = "explode 1s linear 1";
     hp.addEventListener('animationend', () => {
+        if (computerHP == 0){return}
         h1.style.color = "white";
         computerHealth.removeChild(document.querySelector('#computer .health .hp'));
         wait = false;
         computerHP--;
         if (computerHP !== 0) {
             startPulse();}
+        else {checkHPs()}
     })
 }
 function loseRound() {
@@ -89,19 +104,58 @@ function loseRound() {
     let hp = document.querySelector('#player .health .hp')
     hp.style.animation = "explode 1s linear 1";
     hp.addEventListener('animationend', () => {
+        if (playerHP == 0){return}
         playerHealth.removeChild(document.querySelector('#player .health .hp'));
         h1.style.color = "white";
         wait = false;
-        
         playerHP--;
-        
         if (playerHP !== 0) {
             startPulse();}
+        else {checkHPs()}
     })
 }
 
 
+function tieRound() {
+    wait = true;
+    h1.textContent = "IT'S A TIE!";
+    h1.style.color = "cyan";
+    h1.style.animation = "squish 0.3s linear 1";
+    h1.addEventListener('animationend', () => {
+        h1.style.animation = "";
+        h1.style.color = "white";
+        wait = false;
+    })
+}
+
+function checkHPs() {
+    if ((playerHP === 0 || computerHP === 0)) {
+        if (playerHP === 0) {
+            h1.textContent = "YOU LOSE";
+        }
+        if (computerHP === 0) {
+            h1.textContent = "YOU WIN";
+        }
+        let replay = document.createElement('button');
+        replay.textContent = "PLAY AGAIN";
+        replay.style.color = "white";
+        
+        
+        weapon.style.transform = "scale(1, 0)";
+        weapon.style.opacity = "0%";
+        if (!(document.body.contains(button))) {
+            replay.addEventListener('click', reset);
+            mid.appendChild(replay);
+            h1.after(replay);
+            
+        }
+    }
+
+}
+
+
 function playRound(e) {
+    checkHPs();
     if (wait || playerHP === 0 || computerHP === 0) {
         return;
     }
@@ -110,7 +164,7 @@ function playRound(e) {
     let playerChoice = e.currentTarget.getAttribute('id');
     let computerChoice = getComputerChoice();
     if (playerChoice === computerChoice) {
-        console.log("It's a tie!");
+        tieRound();
     } else if (playerChoice === "rock" && computerChoice === "scissors") {
         winRound();
     } else if (playerChoice === "rock" && computerChoice === "scissors") {
@@ -122,6 +176,7 @@ function playRound(e) {
     } else {
         loseRound();
     }
+    checkHPs();
 }
 
 
