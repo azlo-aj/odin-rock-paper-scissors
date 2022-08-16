@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="style.css">
-    <!-- <script src="./script.js"></script>  -->
+    <script src="./script.js" defer></script> 
     <title>Rock Paper Scissors</title>
 </head>
 <body>
@@ -17,17 +17,17 @@
             <div id="player">
                 <h3>PLAYER</h3>
                 <div class="health">
+                    <!-- <div class="hp">♥</div>
                     <div class="hp">♥</div>
-                    <div class="hp">♥</div>
-                    <div class="hp">♥</div>
+                    <div class="hp">♥</div> -->
                 </div>
             </div>
             <div id="computer">
                 <h3>COMPUTER</h3>
                 <div class="health">
+                    <!-- <div class="hp">♥</div>
                     <div class="hp">♥</div>
-                    <div class="hp">♥</div>
-                    <div class="hp">♥</div>
+                    <div class="hp">♥</div> -->
                 </div>
             </div>
 
@@ -40,25 +40,25 @@
         <div id="middle">
             <h1>CHOOSE YOUR WEAPON</h1>
             <div id="weapon">
-                <a href="#" id="rock">
-                    <img src="./rock.png">
+                <a id="rock">
+                    <img src="./rock.png" id="rock">
                     <h2>ROCK</h2>
                 </a>
-                <a href="#" id="paper">
-                    <img src="./paper.png">
+                <a id="paper">
+                    <img src="./paper.png" id="paper">
                     <h2>PAPER</h2>
                 </a>
-                <a href="#" id="scissors">
-                    <img src="./scissors.png">
+                <a id="scissors">
+                    <img src="./scissors.png" id="scissors">
                     <h2>SCISSORS</h2>
                 </a>
             </div>
-            <h1 id="result">OH NO! TRY AGAIN...</h1>
+            <!-- <h1 id="result">OH NO! TRY AGAIN...</h1> -->
         </div>
         <div class="footer">Images obtained from <a href="https://www.vecteezy.com/">vecteezy.com</a></div>
     </div>
 </body>
-<script>
+<!-- <script>
 function onHover(e) {
     e.target.style.width = "250px";
 }
@@ -66,8 +66,6 @@ function onHover(e) {
 function onMouseout(e) {
     e.target.style.width = "";
 }
-let imgs = document.querySelectorAll('img');
-
 function startPulse(){
     let playerHp = document.querySelector('#player .health .hp');
     let computerHp = document.querySelector('#computer .health .hp');
@@ -75,13 +73,13 @@ function startPulse(){
     computerHp.style.animation = "pulse 0.8s linear infinite";
 }
 
-
+let imgs = document.querySelectorAll('img');
 imgs.forEach(function(node) {node.addEventListener('mouseover', onHover)});
 imgs.forEach(function(node) {node.addEventListener('mouseleave', onMouseout)});
-
 startPulse();
 
+document.addEventListener('load', )
 
 
-</script>
+</script> -->
 </html>

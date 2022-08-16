@@ -1,68 +1,137 @@
+let playerHP = 5
+let computerHP = 5
+let imgs = document.querySelectorAll('img');
+let wait = false;
+let computerHealth = document.querySelector('#computer .health');
+let playerHealth = document.querySelector('#player .health');
+h1 = document.querySelector('#middle > h1')
 
+function resetHP() {
+    let heart = document.createElement('div');
+    heart.setAttribute('class', 'hp');
+    heart.textContent = "♥";
+    for (i=0; i < playerHP; i++) {
+        computerHealth.appendChild(heart.cloneNode(true));
+        playerHealth.appendChild(heart.cloneNode(true));
+    }
+    startPulse();
+}
+
+resetHP()
+
+function startPulse(){
+    let player = document.querySelector('#player .health .hp');
+    let computer = document.querySelector('#computer .health .hp');
+    player.style.animation = "pulse 0.8s linear infinite";
+    computer.style.animation = "pulse 0.8s linear infinite";
+}
+startPulse();
 
 function onHover(e) {
-    e.target.img.width = "250px";
+    e.target.style.width = "250px";
 }
-
 function onMouseout(e) {
-    e.target.img.width = "200px";
+    e.target.style.width = "";
+}
+imgs.forEach(function(node) {node.addEventListener('mouseover', onHover)});
+imgs.forEach(function(node) {node.addEventListener('mouseleave', onMouseout)});
+
+
+// let rock = document.getElementById('rock');
+// let paper = document.getElementById('paper');
+// let scissors = document.getElementById('scissors');
+
+function animateChoice(e) {
+    // if (wait) {
+    //     return;
+    // }
+    e.target.style.animation = "select 0.6s linear 1";
+    
 }
 
-function pulsate(node) {
-    node.style.fontSize = "64px";
 
+
+function getComputerChoice() {
+    let roll = Math.random();
+    if (roll < 0.33) {
+        return "rock";
+    } else if (roll < 0.67) {
+        return "paper";
+    } else {
+        return "scissors";
+    }
 }
 
 
-let weapons = document.querySelectorAll('#weapon > *');
-weapons.forEach(function(node) {node.addEventListener('mouseover', onHover)});
-weapons.forEach(function(node) {node.addEventListener('mouseleave', onMouseout)});
+function winRound() {
+    wait = true;
+    h1.textContent = "GOOD JOB! KEEP GOING...";
+    h1.style.color = "yellowgreen";
+    h1.addEventListener('animationend', () => {h1.style.animation = "";})
+    h1.style.animation = "shake 0.3s linear 1";
+    let hp = document.querySelector('#computer .health .hp')
+    hp.style.animation = "explode 1s linear 1";
+    hp.addEventListener('animationend', () => {
+        h1.style.color = "white";
+        computerHealth.removeChild(document.querySelector('#computer .health .hp'));
+        wait = false;
+        computerHP--;
+        if (computerHP !== 0) {
+            startPulse();}
+    })
+}
+function loseRound() {
+    wait = true;
+    h1.textContent = "OH NO! TRY AGAIN...";
+    h1.style.color = "red";
+    h1.addEventListener('animationend', () => {h1.style.animation = "";})
+    h1.style.animation = "shake 0.3s linear 1";
+    let hp = document.querySelector('#player .health .hp')
+    hp.style.animation = "explode 1s linear 1";
+    hp.addEventListener('animationend', () => {
+        playerHealth.removeChild(document.querySelector('#player .health .hp'));
+        h1.style.color = "white";
+        wait = false;
+        
+        playerHP--;
+        
+        if (playerHP !== 0) {
+            startPulse();}
+    })
+}
 
-let hp = document.querySelector('#player .health .hp');
-hp.style.animation = "pulse 1s linear infinite;";
+
+function playRound(e) {
+    if (wait || playerHP === 0 || computerHP === 0) {
+        return;
+    }
+    e.currentTarget.addEventListener('animationend', (e) => {e.currentTarget.style.animation = "";})
+    e.currentTarget.style.animation = "select 0.3s linear 1";
+    let playerChoice = e.currentTarget.getAttribute('id');
+    let computerChoice = getComputerChoice();
+    if (playerChoice === computerChoice) {
+        console.log("It's a tie!");
+    } else if (playerChoice === "rock" && computerChoice === "scissors") {
+        winRound();
+    } else if (playerChoice === "rock" && computerChoice === "scissors") {
+        winRound();
+    } else if (playerChoice === "paper" && computerChoice === "rock") {
+        winRound();
+    } else if (playerChoice === "scissors" && computerChoice === "paper") {
+        winRound();
+    } else {
+        loseRound();
+    }
+}
 
 
+imgs.forEach(function(node) {node.addEventListener('click', playRound)});
 
-// let acceptableSelections = ['ROCK', 'PAPER', 'SCISSORS']
-// let playerWins = 0
-// let computerWins = 0
-
-// function getComputerChoice() {
-//     let roll = Math.random();
-//     if (roll < 0.33) {
-//         return "ROCK";
-//     } else if (roll < 0.67) {
-//         return "PAPER";
-//     } else {
-//         return "SCISSORS";
-//     }
-// }
-// function playRound(playerSelection, computerSelection) {
-//     playerSelection = playerSelection.toUpperCase();
-//     if (acceptableSelections.includes(playerSelection) === false) {
-//         console.log("That is not an acceptable choice.");
-//         playerSelection = prompt("Please type your choice");
-//         return playRound(playerSelection, computerSelection)
-//     }
-//     else if (playerSelection === computerSelection) {
-//         return ("It's a tie!");
-//     } else if (playerSelection === "ROCK" && computerSelection === "SCISSORS") {
-//         return ("You win!");
-//     } else if (playerSelection === "ROCK" && computerSelection === "SCISSORS") {
-//         return ("You win!");
-//     } else if (playerSelection === "PAPER" && computerSelection === "ROCK") {
-//         return ("You win!");
-//     } else if (playerSelection === "SCISSORS" && computerSelection === "PAPER") {
-//         return ("You win!");
-//     } else {
-//         return ("You lose!");
-//     }
-// }
 // function game() {
 //     for (let games = 0; games < 5; games++) {
-//         let computerSelection = getComputerChoice();
-//         let playerSelection = prompt("Please type your choice");
-//         let result = playRound(playerSelection, computerSelection);
+//         let computerChoice = getComputerChoice();
+//         let playerChoice = prompt("Please type your choice");
+//         let result = playRound(playerChoice, computerChoice);
 //         console.log(result)
 //         if (result.includes("win")) {
 //             playerWins += 1;
